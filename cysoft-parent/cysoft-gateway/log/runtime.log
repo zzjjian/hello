@@ -476,3 +476,7 @@ com.netflix.discovery.shared.transport.TransportException: Cannot execute reques
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
 	at java.lang.Thread.run(Thread.java:745)
+[2017-06-14 01:07:10.897][main][INFO][][]o.s.c.a.AnnotationConfigApplicationContext:582 Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@73ee04c8: startup date [Wed Jun 14 01:07:10 CST 2017]; root of context hierarchy
+[2017-06-14 01:07:11.346][main][INFO][][]o.s.b.f.a.AutowiredAnnotationBeanPostProcessor:155 JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2017-06-14 01:07:11.451][main][INFO][][]o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker:325 Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$5a06c53f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2017-06-14 01:07:11.451][background-preinit][INFO][][]o.h.v.i.u.Version:30 HV000001: Hibernate Validator 5.3.5.Final
