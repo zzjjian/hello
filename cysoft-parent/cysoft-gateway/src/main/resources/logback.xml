@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds" debug="true">
+	<!--======================= readme ====================== 1.don't not use 
+		console appender in product or int-test env,so don't add any consoleappender 
+		at this file 2.you should config two system properties LOG_HOME: the root 
+		directory where the log is placed,default value is . LOG_APPEND: append the 
+		log to file ,default is true,in ebao tomcat it will be set to false LOG_DEFAULT_LEVEL: 
+		the default root log level,default value is INFO LOG_CLEAN_HISTORY_ON_START: 
+		clean the history file when app start,default value is true 3.logback will 
+		search the config via order: logback.groovy, logback-test.xml logback.xml 
+		so if you want to customize,pls put a logback-test.xml on the classpath. 
+		4. don't add loggers if it more detail then default level,we already add 
+		add the restful api to change the logger and level see com.ebao.unicorn.platform.foundation.restful.LoggerMgmtResource 
+		for more info pls ask shawn.yang if you want to change this file thanks! -->
+	<property name="VAR_LOG_HOME" value="${CATALINA_HOME:-.}" />
+	<property name="VAR_LOG_APPEND" value="${LOG_APPEND:-true}" />
+	<property name="VAR_LOG_DEFAULT_LEVEL" value="${LOG_DEFAULT_LEVEL:-INFO}" />
+	<property name="VAR_LOG_CENTER_HOST" value="${LOG_CENTER_HOST:-localhost}" />
+	<property name="VAR_LOG_CENTER_PORT" value="${LOG_CENTER_PORT:-9528}" />
+	<property name="VAR_LOG_CLEAN_HISTORY_ON_START" value="${LOG_CLEAN_HISTORY_ON_START:-false}" />
+
+	<!-- 开启哪些appender -->
+	<property name="VAR_CONSOLE_ENABLED" value="${LOG_CONSOLE_ENABLED:-true}" />
+	<property name="VAR_FILE_ENABLED" value="${LOG_FILE_ENABLED:-true}" />
+	<property name="VAR_CENTERLOG_ENABLED" value="${LOG_CENTERLOG_ENABLED:-false}" />
+	<property name="VAR_ELK_ENABLED" value="${VAR_ELK_ENABLED:-false}" />
+
+	<!-- file appender的大小配置 -->
+	<!-- 最大日志文件数 -->
+	<property name="VAR_FILE_APPENDER_MAXHISTORY" value="${LOG_FILE_APPENDER_MAXHISTORY:-10}" />
+	<!-- 最大单一日志文件大小 -->
+	<property name="VAR_FILE_APPENDER_MAXSIZE" value="${LOG_FILE_APPENDER_MAXSIZE:-100MB}" />
+
+	<property name="VAR_LOG_PATTERN"
+		value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%X{userName}][%X{transactionId}]%logger{10}:%L %msg%n" />
+
+	<root>
+		<level value="${VAR_LOG_DEFAULT_LEVEL}" />
+	</root>
+	<!-- 条件激活 console log -->
+	<if condition='property("VAR_CONSOLE_ENABLED").contains("true")'>
+		<then>
+			<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+				<encoder>
+					<pattern>${VAR_LOG_PATTERN}</pattern>
+				</encoder>
+			</appender>
+			<root>
+				<appender-ref ref="CONSOLE" />
+			</root>
+		</then>
+	</if>
+
+	<!-- 条件激活 file log -->
+	<if condition='property("VAR_FILE_ENABLED").contains("true")'>
+		<then>
+			<appender name="FILE"
+				class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${VAR_LOG_HOME}/log/runtime.log</file>
+				<append>${VAR_LOG_APPEND}</append>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<FileNamePattern>${VAR_LOG_HOME}/log/runtime.%d{yyyy-MM-dd}.%i.log
+					</FileNamePattern>
+					<!-- 保留多少天 -->
+					<MaxHistory>${VAR_FILE_APPENDER_MAXHISTORY}</MaxHistory>
+					<CleanHistoryOnStart>${VAR_LOG_CLEAN_HISTORY_ON_START}
+					</CleanHistoryOnStart>
+					<timeBasedFileNamingAndTriggeringPolicy
+						class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+						<maxFileSize>${VAR_FILE_APPENDER_MAXSIZE}</maxFileSize>
+					</timeBasedFileNamingAndTriggeringPolicy>
+				</rollingPolicy>
+
+				<layout class="ch.qos.logback.classic.PatternLayout">
+					<pattern>${VAR_LOG_PATTERN}</pattern>
+				</layout>
+			</appender>
+			<root>
+				<appender-ref ref="FILE" />
+			</root>
+		</then>
+	</if>
+	<!-- 条件激活 ELK 日志中心 -->
+	<if condition='property("VAR_ELK_ENABLED").contains("true")'>
+		<then>
+			<appender name="stash"
+				class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${VAR_LOG_HOME}/log/logstash.log</file>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<fileNamePattern>${VAR_LOG_HOME}/log/logstash.log.%d{yyyy-MM-dd}
+					</fileNamePattern>
+					<maxHistory>30</maxHistory>
+				</rollingPolicy>
+				<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+					<includeMdc>true</includeMdc>
+				</encoder>
+			</appender>
+
+			<root>
+				<appender-ref ref="stash" />
+			</root>
+		</then>
+	</if>
+
+
+	<!-- 条件激活 centerlog 日志中心 -->
+	<if condition='property("VAR_CENTERLOG_ENABLED").contains("true")'>
+		<then>
+			<appender name="centerLogAppender" class="ch.qos.logback.classic.net.SocketAppender">
+				<remoteHost>${VAR_LOG_CENTER_HOST}</remoteHost>
+				<port>${VAR_LOG_CENTER_PORT}</port>
+				<reconnectionDelay>${log.center.reconnectionDelay:-10000}
+				</reconnectionDelay>
+				<includeCallerData>${log.center.includeCallerData:-true}
+				</includeCallerData>
+			</appender>
+			<appender name="asyncAppender" class="ch.qos.logback.classic.AsyncAppender">
+				<appender-ref ref="centerLogAppender" />
+			</appender>
+
+			<root>
+				<appender-ref ref="asyncAppender" />
+			</root>
+		</then>
+	</if>
+
+	<!-- 为了防止开启log4jdbc 之后,导致日志的激增,默认关闭某些logger。 
+		log4jdbc.sqltiming 计时统计SQL的执行用时,OFF/ERROR/WARN/INFO:彻底关闭，,DEBUG:输出所有的SQL时间(根据耗时有DEBUG/WARN/ERROR不同级别),TRACE:输出调用时堆栈信息。
+		log4jdbc.debug 为WARN或者以上级别时，没有信息输出，INFO时仅输出启动时的配置信息，DEBUG时输出详细的DEBUG信息 -->
+	<logger name="log4jdbc.sqltiming">
+		<level value="INFO" />
+	</logger>
+
+	<logger name="log4jdbc.debug">
+		<level value="INFO" />
+	</logger>
+	
+	
+
+
+
+	<!-- see http://stackoverflow.com/questions/2656565/classcircularityerror-when-running-tomcat-6-from-eclipse -->
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<!-- reset all previous level configurations of all j.u.l. loggers -->
+		<resetJUL>true</resetJUL>
+	</contextListener>
+	<!-- include logger&level define see http://logback.qos.ch/manual/configuration.html#fileInclusion -->
+	<include optional="true" resource="logger.xml" />
+</configuration>

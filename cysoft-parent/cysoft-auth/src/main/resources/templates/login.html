@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>Hello World!</title>
+</head>
+<body>
+	<form id="iform" th:action="@{/login}" th:method="post"
+		th:object="${user}">
+		<table border="1">
+			<tr>
+				<td><input type="text" value="" th:field="*{userName}" /></td>
+				<td><input type="text" value="" th:field="*{pwd}" /></td>
+				<td><input type="submit" value="添加" /></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

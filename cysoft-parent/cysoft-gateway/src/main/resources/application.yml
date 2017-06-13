@@ -1,0 +1,19 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8769
+spring:
+  application:
+    name: service-zuul
+auth-service:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: localhost:8762
+zuul:
+  routes:
+    api-a:
+      path: /auth/**
+      serviceId: auth-service
