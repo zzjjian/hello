@@ -17,6 +17,7 @@ public class LoginRestController {
     @Produces({"application/json"}) 
     public final TokenEntity createTicketForRainbow(@RequestBody User user) {
         try{
+        	// 调用service验证用户并生成token
         	TokenEntity token = new TokenEntity();
         	token.setAccess_token("aaaaaaawefaljs323iojsafj");
             return token;
