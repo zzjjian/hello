@@ -1,5 +1,7 @@
 package com.mcs.cysoft.rest.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Produces;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class LoginRestController {
     public final TokenEntity createTicketForRainbow(@RequestBody User user) {
         try{
         	// 调用service验证用户并生成token
-        	TokenEntity token = accessTokenService.createToken();
+        	TokenEntity token = accessTokenService.createToken(user);
             return token;
         } catch (final Throwable e) {
         	TokenEntity token = new TokenEntity();
@@ -33,8 +35,17 @@ public class LoginRestController {
     }
 	
 	@RequestMapping(value = "/v1/json/tickets/check", method = RequestMethod.GET)
-    @Produces({"application/json"}) 
-    public final boolean createTicketForRainbow() {
-        return accessTokenService.checkToken();
+    //@Produces({"application/json"}) 
+    public final boolean createTicketForRainbow(HttpServletRequest request, HttpServletResponse response) {
+		String access_token = request.getHeader("Authorization");
+    	String user_name = request.getHeader("username");
+        return accessTokenService.checkToken(access_token, user_name);
+    }
+	
+	@RequestMapping(value = "/v1/json/test", method = RequestMethod.GET)
+	public final String test(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		System.out.println(request.getHeader("username"));
+		throw new Exception("one error llll");
+		//return "aaa";
     }
 }
