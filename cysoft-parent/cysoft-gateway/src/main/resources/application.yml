@@ -17,3 +17,8 @@ zuul:
     api-a:
       path: /auth/**
       serviceId: auth-service
+cysoft:
+  gateway:
+    security:
+      ignore:
+        urls: /auth/v1/json/tickets
