@@ -1,14 +1,26 @@
 package com.mcs.cysoft.filter;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
+import com.mcs.cysoft.common.entity.UserRedisEntity;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 
 @Component
 public class AuthorityCheckFilter extends ZuulFilter{
+	
+	@Autowired
+	private RedisTemplate<String, UserRedisEntity> redisTemplate;
+	
+	private static PathMatcher matcher = new AntPathMatcher();
 
 	@Override
 	public Object run() {
@@ -18,11 +30,27 @@ public class AuthorityCheckFilter extends ZuulFilter{
 		String user_name = ctx.get("username").toString();
 		
 		// authority check
-		// 传递用户名和当前的访问path
-		System.out.println("access authority check filter");
-		System.out.println(request.getRequestURI());
-		System.out.println(request.getPathInfo());
-		System.out.println(request.getServletPath());
+		// 从redis获取用户可访问的api路径进行权限验证
+		UserRedisEntity entity = redisTemplate.boundValueOps(user_name).get();
+		List<String> urlList = entity.getUrlList();
+		boolean url = false;
+		for (String path : urlList) {
+			if (matcher.match(path, request.getRequestURI())) {
+				ctx.setSendZuulResponse(true);// 对该请求进行路由
+				// ctx.setResponseStatusCode(200);
+				ctx.addZuulRequestHeader("username", user_name);
+				ctx.set("isSuccess", true);// 设值，让下一个Filter看到上一个Filter的状态
+				ctx.set("username", user_name);
+				url = true;
+				break;
+			}
+		}
+		if(!url){
+			ctx.setSendZuulResponse(false);// 过滤该请求，不对其进行路由
+			ctx.setResponseStatusCode(401);// 返回错误码
+			ctx.setResponseBody("{\"result\":\"no permission to access url!\"}");// 返回错误内容
+			ctx.set("isSuccess", false);
+		}
 		
 		return null;
 	}

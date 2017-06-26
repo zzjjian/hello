@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mcs.cysoft.entity.TokenEntity;
-import com.mcs.cysoft.util.RedisObjectSerializer;
+import com.mcs.cysoft.common.entity.UserRedisEntity;
+import com.mcs.cysoft.common.util.RedisObjectSerializer;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -42,8 +42,8 @@ public class AuthApplication {
         return new JedisConnectionFactory();
     }
     @Bean
-    public RedisTemplate<String, TokenEntity> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, TokenEntity> template = new RedisTemplate<String, TokenEntity>();
+    public RedisTemplate<String, UserRedisEntity> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, UserRedisEntity> template = new RedisTemplate<String, UserRedisEntity>();
         template.setConnectionFactory(jedisConnectionFactory());
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new RedisObjectSerializer());

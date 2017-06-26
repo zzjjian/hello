@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mcs.cysoft.entity.TokenEntity;
+import com.mcs.cysoft.common.entity.TokenEntity;
 import com.mcs.cysoft.entity.User;
 import com.mcs.cysoft.service.AccessTokenService;
 
@@ -45,7 +45,7 @@ public class LoginRestController {
 	@RequestMapping(value = "/v1/json/test", method = RequestMethod.GET)
 	public final String test(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		System.out.println(request.getHeader("username"));
-		throw new Exception("one error llll");
-		//return "aaa";
+//		throw new Exception("one error llll");
+		return "aaa";
     }
 }

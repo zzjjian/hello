@@ -1,4 +1,4 @@
-package com.mcs.cysoft.entity;
+package com.mcs.cysoft.common.entity;
 
 import java.io.Serializable;
 

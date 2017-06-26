@@ -1,6 +1,6 @@
 package com.mcs.cysoft.service;
 
-import com.mcs.cysoft.entity.TokenEntity;
+import com.mcs.cysoft.common.entity.TokenEntity;
 import com.mcs.cysoft.entity.User;
 
 public interface AccessTokenService {

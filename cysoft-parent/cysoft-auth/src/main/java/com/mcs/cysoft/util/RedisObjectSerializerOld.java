@@ -6,7 +6,7 @@ import org.springframework.core.serializer.support.SerializingConverter;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
-public class RedisObjectSerializer implements RedisSerializer<Object> {
+public class RedisObjectSerializerOld implements RedisSerializer<Object> {
 	private Converter<Object, byte[]> serializer = new SerializingConverter();
 	private Converter<byte[], Object> deserializer = new DeserializingConverter();
 	static final byte[] EMPTY_ARRAY = new byte[0];
