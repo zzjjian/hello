@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mcs.cysoft.common.entity.TokenEntity;
+import com.mcs.cysoft.common.exception.ExceptionEnums;
 import com.mcs.cysoft.entity.User;
+import com.mcs.cysoft.exception.ServiceException;
 import com.mcs.cysoft.service.AccessTokenService;
 
 @RestController
@@ -27,10 +29,13 @@ public class LoginRestController {
         	// 调用service验证用户并生成token
         	TokenEntity token = accessTokenService.createToken(user);
             return token;
-        } catch (final Throwable e) {
-        	TokenEntity token = new TokenEntity();
-        	token.setAccess_token(null);
-            return token;
+        } catch (ServiceException e) {
+        	throw e;
+//        	TokenEntity token = new TokenEntity();
+//        	token.setAccess_token(null);
+//            return token;
+        } catch (Exception e) {
+        	throw e;
         }
     }
 	
@@ -48,4 +53,9 @@ public class LoginRestController {
 //		throw new Exception("one error llll");
 		return "aaa";
     }
+	
+	private String buildExceptionJSON(ServiceException se){ 
+		ExceptionEnums enums = se.getExceptionEnums(); 
+		return  "{'code':"+ enums.getCode()+",'message':'     "+enums.getDescription()+"'}"; 
+	} 
 }

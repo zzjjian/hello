@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.mcs.cysoft.common.entity.TokenEntity;
 import com.mcs.cysoft.common.entity.UserRedisEntity;
+import com.mcs.cysoft.common.exception.ExceptionEnums;
 import com.mcs.cysoft.entity.User;
+import com.mcs.cysoft.exception.UsernameOrPwdInvalidException;
 import com.mcs.cysoft.service.AccessTokenService;
 
 @Service
@@ -31,6 +33,10 @@ public class AccessTokenServiceImpl implements AccessTokenService{
 		entity.setAccess_token(token);
 		entity.setUserName(user.getUserName());
 		
+		if("jan.zhang".equals(user.getUserName())){
+			throw new UsernameOrPwdInvalidException(ExceptionEnums.UNAUTH_ERROR);
+		}
+		
 		// redis hash值存储用户信息和权限访问列表
 		UserRedisEntity userEntity = new UserRedisEntity();
 		userEntity.setUserId(123456L);
@@ -38,8 +44,11 @@ public class AccessTokenServiceImpl implements AccessTokenService{
 		urlList.add("/aut/**");
 		userEntity.setUrlList(urlList);
 		userEntity.setTokenEntity(entity);
-		
-		redisTemplate.boundValueOps(entity.getUserName()).set(userEntity, 1, TimeUnit.HOURS);
+		try{
+			redisTemplate.boundValueOps(entity.getUserName()).set(userEntity, 1, TimeUnit.HOURS);
+		} catch(Exception e) {
+			throw new RuntimeException("redis error");
+		}
 		// redisTemplate.boundHashOps(entity.getUserName()).
 		
 		return entity;
