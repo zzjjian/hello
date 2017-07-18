@@ -35,7 +35,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.4.0</version>
@@ -44,6 +44,12 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.4.0</version>
+		</dependency> -->
+		
+		<dependency>
+			<groupId>com.mcs.cysoft</groupId>
+			<artifactId>cysoft-spring-boot-starter-swagger2</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>

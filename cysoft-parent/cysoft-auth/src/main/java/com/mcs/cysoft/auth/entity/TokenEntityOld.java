@@ -1,8 +1,8 @@
-package com.mcs.cysoft.common.entity;
+package com.mcs.cysoft.auth.entity;
 
 import java.io.Serializable;
 
-public class TokenEntity implements Serializable{
+public class TokenEntityOld implements Serializable{
 	
 	private static final long serialVersionUID = -1L;
 
@@ -24,11 +24,6 @@ public class TokenEntity implements Serializable{
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-	
-	@Override
-	public String toString(){
-		return "{'access_token':" + this.getAccess_token() + ",'user_name':'" + this.getUserName() + "'}";
 	}
 	
 }

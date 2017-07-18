@@ -1,18 +1,14 @@
-package com.mcs.cysoft.common.exception;
+package com.mcs.cysoft.common.entity;
 
-public enum ExceptionEnums {
-	
-	UNAUTH_ERROR("B0001", "认证不正确"),
-	
-	
-	INTERNAL_SERVER_ERROR("B9000", "服务器内部错误");
-	
+public class CommonErrorInfo {
+
 	private String code;
+	
 	private String description;
 	
-	ExceptionEnums(String code, String description){
+	public CommonErrorInfo(String code, String des){
 		this.code = code;
-		this.description = description;
+		this.description = des;
 	}
 
 	public String getCode() {
@@ -30,5 +26,4 @@ public enum ExceptionEnums {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 }
