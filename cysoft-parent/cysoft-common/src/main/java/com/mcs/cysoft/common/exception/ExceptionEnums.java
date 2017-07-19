@@ -2,10 +2,10 @@ package com.mcs.cysoft.common.exception;
 
 public enum ExceptionEnums {
 	
-	UNAUTH_ERROR("B0001", "认证不正确"),
+	UNAUTH_ERROR("B0001", "用户名密码认证失败!"),
 	
 	
-	INTERNAL_SERVER_ERROR("B9000", "服务器内部错误");
+	INTERNAL_SERVER_ERROR("B9000", "服务器内部错误!");
 	
 	private String code;
 	private String description;

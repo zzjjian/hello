@@ -1,5 +1,6 @@
-package com.mcs.cysoft.auth.exception;
+package com.mcs.cysoft.common.exception;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -7,9 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.mcs.cysoft.common.entity.CommonErrorInfo;
-import com.mcs.cysoft.common.exception.ExceptionEnums;
-import com.mcs.cysoft.common.exception.ServiceException;
 
+@Configuration
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 

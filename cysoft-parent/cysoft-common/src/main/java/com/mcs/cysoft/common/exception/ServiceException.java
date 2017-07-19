@@ -14,6 +14,13 @@ public class ServiceException extends RuntimeException {
 		this.code = exceptionEnums.getCode();
 		this.description = exceptionEnums.getDescription();
 	}
+	
+	public ServiceException(ExceptionEnums exceptionEnums, String message) {
+		super(message);
+		this.exceptionEnums = exceptionEnums;
+		this.code = exceptionEnums.getCode();
+		this.description = exceptionEnums.getDescription();
+	}
 
 	public ExceptionEnums getExceptionEnums() {
 		return exceptionEnums;

@@ -11,7 +11,7 @@ public class UsernameOrPwdInvalidException extends ServiceException {
 	private static final long serialVersionUID = 1L;
 
 	public UsernameOrPwdInvalidException(ExceptionEnums exceptionEnums) {
-		super(exceptionEnums);
+		super(exceptionEnums, "用户名密码认证失败！");
 	}
 
 }
