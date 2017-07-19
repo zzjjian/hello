@@ -3,7 +3,7 @@ package com.mcs.cysoft.auth.entity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "用户认证实体")
+@ApiModel(value = "User")
 public class User {
 	
 	@ApiModelProperty(value = "登录用户名")

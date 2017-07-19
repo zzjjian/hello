@@ -8,7 +8,7 @@ public class TokenEntity implements Serializable{
 
 	private String access_token;
 	
-	private String userName;
+	private String user_name;
 
 	public String getAccess_token() {
 		return access_token;
@@ -18,17 +18,17 @@ public class TokenEntity implements Serializable{
 		this.access_token = access_token;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUser_name() {
+		return user_name;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
 	
 	@Override
 	public String toString(){
-		return "{'access_token':" + this.getAccess_token() + ",'user_name':'" + this.getUserName() + "'}";
+		return "{'access_token':" + this.getAccess_token() + ",'user_name':'" + this.getUser_name() + "'}";
 	}
 	
 }

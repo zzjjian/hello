@@ -22,3 +22,5 @@ spring:
       max-idle: 8
       min-idle: 0
     timeout: 0
+swagger:
+  package: com.mcs.cysoft.auth.rest.controller

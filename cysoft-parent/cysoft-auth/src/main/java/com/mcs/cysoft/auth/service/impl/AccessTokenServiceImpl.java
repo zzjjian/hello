@@ -31,7 +31,7 @@ public class AccessTokenServiceImpl implements AccessTokenService{
 		String token = TokenGeneratorUtil.getToken();
 		TokenEntity entity = new TokenEntity();
 		entity.setAccess_token(token);
-		entity.setUserName(user.getUserName());
+		entity.setUser_name(user.getUserName());
 		
 		if("jan.zhang".equals(user.getUserName())){
 			throw new UsernameOrPwdInvalidException(ExceptionEnums.UNAUTH_ERROR);
@@ -45,7 +45,7 @@ public class AccessTokenServiceImpl implements AccessTokenService{
 		userEntity.setUrlList(urlList);
 		userEntity.setTokenEntity(entity);
 			
-		redisTemplate.boundValueOps(entity.getUserName()).set(userEntity, 1, TimeUnit.HOURS);
+		redisTemplate.boundValueOps(entity.getUser_name()).set(userEntity, 1, TimeUnit.HOURS);
 		// redisTemplate.boundHashOps(entity.getUserName()).
 		
 		return entity;

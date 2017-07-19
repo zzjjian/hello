@@ -1,5 +1,6 @@
 package com.mcs.cysoft.swagger;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,13 +16,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class CysoftSwaggerAutoConfiguration {
+	
+	@Value(value = "${swagger.package}")
+	private String swaggerPackage;
 
 	@Bean
     public Docket buildDocket(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInf())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.mcs.cysoft.rest.controller"))
+                .apis(RequestHandlerSelectors.basePackage(swaggerPackage))
                 .paths(PathSelectors.any())
                 .build();
     }
