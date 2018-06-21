@@ -1,0 +1,32 @@
+#login {
+    overflow: hidden;
+    background: #fff;
+    padding: 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    width:220px;
+    float:right;
+   	background-color: rgba(255,255,255,0.3);
+   	right: 15%;
+   	top: 25%;
+   	border: solid 1px #d1d1d1;
+   	border-radius: 8px;
+   	position: absolute;
+}
+#confirm {
+    overflow: hidden;
+    background: #fff;
+    padding: 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    width:220px;
+    float:right;
+   	background-color: rgba(255,255,255,0.3);
+   	right: 15%;
+   	top: 25%;
+   	border: solid 1px #d1d1d1;
+   	border-radius: 8px;
+   	position: absolute;
+}

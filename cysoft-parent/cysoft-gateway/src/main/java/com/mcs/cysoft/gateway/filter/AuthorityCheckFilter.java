@@ -47,7 +47,7 @@ public class AuthorityCheckFilter extends ZuulFilter{
 		}
 		if(!url){
 			ctx.setSendZuulResponse(false);// 过滤该请求，不对其进行路由
-			ctx.setResponseStatusCode(401);// 返回错误码
+			ctx.setResponseStatusCode(403);// 返回错误码
 			ctx.setResponseBody("{\"result\":\"no permission to access url!\"}");// 返回错误内容
 			ctx.set("isSuccess", false);
 		}
@@ -58,7 +58,13 @@ public class AuthorityCheckFilter extends ZuulFilter{
 	@Override
 	public boolean shouldFilter() {
 		// TODO Auto-generated method stub
-		RequestContext ctx = RequestContext.getCurrentContext();  
+		RequestContext ctx = RequestContext.getCurrentContext();
+		
+		boolean ignoreFilter = (boolean) ctx.get("ignoreFilter");
+		
+		if(ignoreFilter){
+			return false;
+		}
 		
         // 如果前一个过滤器的结果为true，则说明上一个过滤器成功了，需要进入当前的过滤，如果前一个过滤器的结果为false，则说明上一个过滤器没有成功，则无需进行下面的过滤动作了，直接跳过后面的所有过滤器并返回结果
 		return (boolean) ctx.get("isSuccess");

@@ -23,7 +23,7 @@ public class GlobalControllerExceptionHandler {
 		return err;
 	}
 	
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST) // 400
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR) // 400
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public CommonErrorInfo handleException(Exception ex) {

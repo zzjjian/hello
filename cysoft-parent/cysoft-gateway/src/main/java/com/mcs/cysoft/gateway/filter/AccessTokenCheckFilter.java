@@ -17,6 +17,8 @@ import org.springframework.util.PathMatcher;
 
 import com.google.common.collect.Lists;
 import com.mcs.cysoft.common.entity.UserRedisEntity;
+import com.mcs.cysoft.common.exception.ExceptionEnums;
+import com.mcs.cysoft.gateway.exception.HeaderUsernameNullException;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 
@@ -60,6 +62,10 @@ public class AccessTokenCheckFilter extends ZuulFilter {
 		 */
 
 		// 直接从redis获取token做判断
+		
+		if("".equals(user_name) || user_name==null){
+			throw new HeaderUsernameNullException(ExceptionEnums.HEADER_USERNAME_NULL_ERROR);
+		}
 
 		UserRedisEntity entity = redisTemplate.boundValueOps(user_name).get();
 		if (entity != null) {
@@ -75,7 +81,7 @@ public class AccessTokenCheckFilter extends ZuulFilter {
 		if (token_check) {
 			ctx.setSendZuulResponse(true);// 对该请求进行路由
 			// ctx.setResponseStatusCode(200);
-			ctx.addZuulRequestHeader("username", user_name);
+			ctx.addZuulRequestHeader("userid", entity.getUserId());
 			ctx.set("isSuccess", true);// 设值，让下一个Filter看到上一个Filter的状态
 			ctx.set("username", user_name);
 
@@ -103,7 +109,7 @@ public class AccessTokenCheckFilter extends ZuulFilter {
 		HttpServletRequest request = ctx.getRequest();
 		for (String path : getIgnoredPaths()) {
 			if (matcher.match(path, request.getRequestURI())) {
-				ctx.set("isSuccess", false);
+				ctx.set("ignoreFilter", true);
 				return false;
 			}
 		}

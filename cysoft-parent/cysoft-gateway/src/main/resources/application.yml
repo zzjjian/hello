@@ -22,3 +22,6 @@ cysoft:
     security:
       ignore:
         urls: /auth/v1/json/tickets
+hystrix:
+  metrics:
+    polling-interval-ms: 1000

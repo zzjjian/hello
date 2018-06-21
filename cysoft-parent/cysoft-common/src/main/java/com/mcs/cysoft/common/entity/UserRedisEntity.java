@@ -8,17 +8,17 @@ public class UserRedisEntity implements Serializable {
 	
 	private static final long serialVersionUID = -1L;
 	
-	private Long userId;
+	private String userId;
 	
 	private TokenEntity tokenEntity;
 	
 	private List<String> urlList = new ArrayList<String>();
 
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

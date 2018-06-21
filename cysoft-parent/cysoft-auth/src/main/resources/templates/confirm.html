@@ -9,15 +9,8 @@
 <link th:href="@{css/cysoft.css}" rel="stylesheet" />
 </head>
 <body>
-	<div id="login">
-		<form id="lgform" th:action="@{/login}" th:method="post"
-			th:object="${user}">
-			<input type="text" value="" placeholder="username" th:field="*{userName}" />
-			<br/>
-			<input type="text" value="" placeholder="password" th:field="*{pwd}" />
-			<br/>
-			<button type="submit" class="btn">登  录</button>
-		</form>
+	<div id="confirm">
+		<a th:href="${callbackUrl}">确定授权登录？</a>
 	</div>
 	
 	<script th:src="@{js/jquery-3.2.1.min.js}" type="text/javascript"></script>
